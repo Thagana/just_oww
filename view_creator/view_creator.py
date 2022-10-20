@@ -20,3 +20,16 @@ export default function $name () {
     def generate_index_file(name: str) -> str:
         index = """export {default} from './$name';"""
         return Template(index).substitute(name=name)
+    
+    def generate_test_file(name: str) -> str:
+        content = """import React from 'react';
+import ReactDOM from 'react-dom';
+import $name from './$name';
+
+it('It should mount', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<$name />, div);
+  ReactDOM.unmountComponentAtNode(div);
+});
+        """
+        return Template(content).substitute(name=name)
